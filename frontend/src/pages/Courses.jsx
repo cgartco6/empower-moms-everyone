@@ -4,6 +4,27 @@ import CourseCard from '../components/CourseCard';
 export default function Courses() {
   const [freeCourses, setFreeCourses] = useState([]);
   const [paidCourses, setPaidCourses] = useState([]);
+const [selectedCategory, setSelectedCategory] = useState('all');
+const [selectedSubCategory, setSelectedSubCategory] = useState('all');
+
+const categories = ['trending', 'traditional', 'rare', 'dying'];
+const subCategories = {
+  trending: ['trading', 'artificial intelligence', 'ecommerce', 'marketing', 'freelancing', 'cooking', 'sustainability'],
+  // ... others
+};
+
+return (
+  <div>
+    <div className="filters">
+      <select onChange={e => setSelectedCategory(e.target.value)}>
+        <option value="all">All Categories</option>
+        {categories.map(cat => <option key={cat}>{cat}</option>)}
+      </select>
+      {/* Dynamic subcategory dropdown */}
+    </div>
+    {/* Course grid */}
+  </div>
+);
   
   useEffect(() => {
     fetch('/api/v1/courses?is_free=true').then(res => res.json()).then(setFreeCourses);
