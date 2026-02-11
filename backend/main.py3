@@ -1,6 +1,31 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from backend.orchestrator.synthetic_intelligence import SyntheticIntelligence
+from fastapi import APIRouter, Depends, HTTPException
+from backend.services.course_generation import CourseGenerator
+from backend.utils.auth import get_current_admin_user
+
+router = APIRouter(prefix="/api/v1/admin", tags=["admin"])
+
+@router.post("/generate-free-courses")
+async def generate_free_courses(
+    count: int = 10,
+    admin = Depends(get_current_admin_user)
+):
+    """Generate a batch of free introductory courses."""
+    generator = CourseGenerator()
+    courses = await generator.generate_free_intro_courses(count)
+    return {"status": "success", "courses_created": len(courses)}
+
+@router.post("/generate-paid-courses")
+async def generate_paid_courses(
+    count: int = 30,
+    admin = Depends(get_current_admin_user)
+):
+    """Generate a batch of paid full courses."""
+    generator = CourseGenerator()
+    courses = await generator.generate_paid_courses(count)
+    return {"status": "success", "courses_created": len(courses)}
 
 app = FastAPI(title="Empower Moms & Everyone - AI Course Creator")
 
