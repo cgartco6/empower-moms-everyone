@@ -53,3 +53,11 @@ class SyntheticIntelligence:
         final_course = assembler.assemble(blueprint, course_materials)
         
         return final_course
+        
+async def create_course(self, blueprint: dict, short_mode: bool = False):
+    if short_mode:
+        # Force only 1 module, short lessons
+        blueprint['modules'] = blueprint['modules'][:1]
+        for module in blueprint['modules']:
+            module['lesson_count'] = 3  # override
+    # ... rest of creation pipeline
